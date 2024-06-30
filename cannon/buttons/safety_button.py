@@ -1,5 +1,4 @@
 from cannon.buttons.button import Button
-
 from cannon.constants import PinValues
 
 

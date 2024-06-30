@@ -2,13 +2,15 @@ try:
     import asyncio
 except ImportError:
     import uasyncio as asyncio
+
+import time
+
 from machine import WDT, Pin  # Watchdog Timer
 
 from cannon.buttons.fire_button import FireButton
 from cannon.buttons.safety_button import SafetyButton
 from cannon.network_server import NetworkServer
 from cannon.relay import Relay
-
 
 LED = Pin("LED", Pin.OUT)
 
@@ -36,16 +38,17 @@ class Cannon:
         Main function for the cannon
         :return:
         """
+        loop_time = 50 # 50ms loop time
         LED.toggle()
-        wdt = WDT(timeout=2000)  # 2 seconds
+        wdt = WDT(timeout=2000)  # 2 seconds, watchdog timer, so if the program hangs, it will reset
         await self.network_server.start()  # Start the network server
         LED.toggle()
         # Core loop
         while True:
-            if self.fire_button.is_pressed():
+            if self.fire_button.button_triggered():
                 print("Fire button pressed")
                 await self.fire_cannon()
-            await asyncio.sleep_ms(100)
+            await asyncio.sleep_ms(loop_time)
             wdt.feed()
             #print("Looping")
 
@@ -53,14 +56,14 @@ class Cannon:
         """
         Fire the cannon
         """
-        milliseconds: int = 100
+        milliseconds: int = 200
         print("Fire Command Received")
         if self.safety_button.is_pressed():
             print("Safety released, firing")
             LED.on()
             self.main_relay.relay_on()
             print("Solenoid on")
-            await asyncio.sleep_ms(milliseconds)
+            time.sleep_ms(milliseconds) # this is purposly blocking, so that the time is accurate
             self.main_relay.relay_off()
             LED.off()
             print("Solenoid off")
