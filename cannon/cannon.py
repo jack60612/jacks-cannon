@@ -36,8 +36,10 @@ class Cannon:
         Main function for the cannon
         :return:
         """
+        LED.toggle()
         wdt = WDT(timeout=2000)  # 2 seconds
         await self.network_server.start()  # Start the network server
+        LED.toggle()
         # Core loop
         while True:
             if self.fire_button.is_pressed():
