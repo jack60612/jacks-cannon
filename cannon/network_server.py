@@ -78,7 +78,7 @@ class NetworkServer:
         """
         Start the webserver
         """
-        #await asyncio.create_task(
-        #    asyncio.start_server(self.serve_client, "0.0.0.0", 80)
-        #)
-        await asyncio.start_server(self.serve_client, "0.0.0.0",80)
+        await asyncio.create_task(
+            asyncio.start_server(self.serve_client, "0.0.0.0", 80)
+        )
+        #await asyncio.start_server(self.serve_client, "0.0.0.0",80)

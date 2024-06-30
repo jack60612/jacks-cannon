@@ -45,6 +45,7 @@ class Cannon:
                 await self.fire_cannon()
             await asyncio.sleep_ms(100)
             wdt.feed()
+            #print("Looping")
 
     async def fire_cannon(self) -> None:
         """
