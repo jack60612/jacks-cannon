@@ -14,6 +14,7 @@ from cannon.relay import Relay
 
 LED = Pin("LED", Pin.OUT)
 
+
 class Cannon:
     """
     Class for the cannon
@@ -38,9 +39,11 @@ class Cannon:
         Main function for the cannon
         :return:
         """
-        loop_time = 50 # 50ms loop time
+        loop_time = 50  # 50ms loop time
         LED.toggle()
-        wdt = WDT(timeout=2000)  # 2 seconds, watchdog timer, so if the program hangs, it will reset
+        wdt = WDT(
+            timeout=2000
+        )  # 2 seconds, watchdog timer, so if the program hangs, it will reset
         await self.network_server.start()  # Start the network server
         LED.toggle()
         # Core loop
@@ -50,7 +53,7 @@ class Cannon:
                 await self.fire_cannon()
             await asyncio.sleep_ms(loop_time)
             wdt.feed()
-            #print("Looping")
+            # print("Looping")
 
     async def fire_cannon(self) -> None:
         """
@@ -63,7 +66,9 @@ class Cannon:
             LED.on()
             self.main_relay.relay_on()
             print("Solenoid on")
-            time.sleep_ms(milliseconds) # this is purposly blocking, so that the time is accurate
+            time.sleep_ms(
+                milliseconds
+            )  # this is purposly blocking, so that the time is accurate
             self.main_relay.relay_off()
             LED.off()
             print("Solenoid off")

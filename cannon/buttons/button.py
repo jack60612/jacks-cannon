@@ -35,7 +35,7 @@ class Button:
         Get the debounced state of the button
         :return: True if the button is pressed, False otherwise
         """
-        debounce_window = 40 # 40ms debounce window
+        debounce_window = 40  # 40ms debounce window
         # if matches the last value, return the last value, skip the debounce
         if self.button_state_raw == self.last_value:
             return self.last_value
@@ -44,13 +44,15 @@ class Button:
         while active < debounce_window:  # wait for 20ms with the same value
             if self.button_state_raw() == new_value:
                 active += 1  # if the value is still changed count up
-            elif -debounce_window > active:  # if the value flipped back return the old value
+            elif (
+                -debounce_window > active
+            ):  # if the value flipped back return the old value
                 return self.last_value
             elif active > 0:  # if the value flipped, reset the counter
                 active = -1
             else:  # if the value is still old count negative
                 active += -1
-            time.sleep_ms(1) # sleep for 1ms, purposly block.
+            time.sleep_ms(1)  # sleep for 1ms, purposly block.
         self.last_value = new_value
         return new_value  # if the value is stable for 20ms, return it
 
@@ -61,14 +63,15 @@ class Button:
         """
         return self.button_state()
 
-
     def button_triggered(self) -> bool:
         """
         Check if the button is pressed and not already tracked as pressed
         :return: True if the button is pressed and not already tracked as pressed, False otherwise
         """
         button_state = self.button_state()
-        if button_state and not self.last_value: # if the button is pressed and the last value was not pressed
+        if (
+            button_state and not self.last_value
+        ):  # if the button is pressed and the last value was not pressed
             return True
-        else: # if the button is not pressed or the last value was pressed
+        else:  # if the button is not pressed or the last value was pressed
             return False

@@ -1,4 +1,3 @@
-
 class PinValues:
     """
     Pin Values for the project
