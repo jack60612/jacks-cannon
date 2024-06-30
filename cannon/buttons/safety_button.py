@@ -1,6 +1,6 @@
 from button import Button
 
-from cannon.constants import Constants
+from cannon.constants import PinValues
 
 
 class SafetyButton(Button):
@@ -8,7 +8,7 @@ class SafetyButton(Button):
     Class for interacting with the safety button
     """
 
-    def __init__(self, pin: int = Constants.safety_switch_pin) -> None:
+    def __init__(self, pin: int = PinValues.safety_switch_pin) -> None:
         """
         Initialize the safety switch
         :param pin: The pin the safety switch is connected to

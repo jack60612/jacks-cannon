@@ -1,6 +1,6 @@
 from machine import Pin
 
-from cannon.constants import Constants
+from cannon.constants import PinValues
 
 
 class Relay:
@@ -11,7 +11,7 @@ class Relay:
     pin_number: int
     pin: Pin
 
-    def __init__(self, pin: int = Constants.relay_pin) -> None:
+    def __init__(self, pin: int = PinValues.relay_pin) -> None:
         """
         Initialize the relay
         :param pin: The pin the relay is connected to
