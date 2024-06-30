@@ -28,7 +28,7 @@ class Button:
         Get the state of the button
         :return: True if the button is pressed, False otherwise
         """
-        return not self.pin.value() == 0
+        return self.pin.value() == 0
 
     def button_state(self) -> bool:
         """

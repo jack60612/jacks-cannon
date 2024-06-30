@@ -1,10 +1,16 @@
-import asyncio
+try:
+    import asyncio
+except ImportError:
+    import uasyncio as asyncio
+from machine import WDT, Pin  # Watchdog Timer
 
 from cannon.buttons.fire_button import FireButton
 from cannon.buttons.safety_button import SafetyButton
 from cannon.network_server import NetworkServer
 from cannon.relay import Relay
 
+
+LED = Pin("LED", Pin.OUT)
 
 class Cannon:
     """
@@ -30,6 +36,7 @@ class Cannon:
         Main function for the cannon
         :return:
         """
+        wdt = WDT(timeout=2000)  # 2 seconds
         await self.network_server.start()  # Start the network server
         # Core loop
         while True:
@@ -37,18 +44,22 @@ class Cannon:
                 print("Fire button pressed")
                 await self.fire_cannon()
             await asyncio.sleep_ms(100)
+            wdt.feed()
 
     async def fire_cannon(self) -> None:
         """
         Fire the cannon
         """
         milliseconds: int = 100
+        print("Fire Command Received")
         if self.safety_button.is_pressed():
             print("Safety released, firing")
+            LED.on()
             self.main_relay.relay_on()
             print("Solenoid on")
             await asyncio.sleep_ms(milliseconds)
             self.main_relay.relay_off()
+            LED.off()
             print("Solenoid off")
         else:
             print("Safety not released, not firing")

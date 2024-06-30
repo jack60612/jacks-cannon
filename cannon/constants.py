@@ -1,7 +1,5 @@
-from enum import Enum
 
-
-class PinValues(Enum):
+class PinValues:
     """
     Pin Values for the project
     """
