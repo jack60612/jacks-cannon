@@ -18,6 +18,7 @@ def main() -> None:
                 main_relay.relay_on()
                 time.sleep_ms(100)
                 main_relay.relay_off()
+        time.sleep_ms(100)
 
 
 if __name__ == "__main__":
