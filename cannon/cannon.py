@@ -24,6 +24,7 @@ class Cannon:
     safety_button: SafetyButton
     main_relay: Relay
     network_server: NetworkServer
+    fire_time: int = 200
 
     def __init__(self) -> None:
         """
@@ -59,7 +60,6 @@ class Cannon:
         """
         Fire the cannon
         """
-        milliseconds: int = 200
         print("Fire Command Received")
         if self.safety_button.is_pressed():
             print("Safety released, firing")
@@ -67,7 +67,7 @@ class Cannon:
             self.main_relay.relay_on()
             print("Solenoid on")
             time.sleep_ms(
-                milliseconds
+                self.fire_time
             )  # this is purposly blocking, so that the time is accurate
             self.main_relay.relay_off()
             LED.off()

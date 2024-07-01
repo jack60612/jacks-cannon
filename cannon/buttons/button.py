@@ -68,9 +68,10 @@ class Button:
         Check if the button is pressed and not already tracked as pressed
         :return: True if the button is pressed and not already tracked as pressed, False otherwise
         """
+        last_val = self.last_value
         button_state = self.button_state()
         if (
-            button_state and not self.last_value
+            button_state and not last_val
         ):  # if the button is pressed and the last value was not pressed
             return True
         else:  # if the button is not pressed or the last value was pressed
