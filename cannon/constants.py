@@ -20,4 +20,4 @@ class Constants:
     watchdog_timeout: int = (
         2000  # 2 seconds, watchdog timer, so if the program hangs, it will reset
     )
-    debounce_window: int = 20  # 20ms debounce window
+    debounce_window: int = 50  # 20ms debounce window

@@ -1,7 +1,7 @@
 import asyncio
 import time
 
-from machine import WDT, Pin  # Watchdog Timer
+from machine import Pin  # Watchdog Timer
 
 from cannon.buttons.fire_button import FireButton
 from cannon.buttons.safety_button import SafetyButton
@@ -48,8 +48,8 @@ class Cannon:
         LED.off()
         # Core loop
         while True:
-            self.fire_button.button.close.clear()
-            await self.fire_button.button.close.wait()
+            self.fire_button.button.press.clear()
+            await self.fire_button.button.press.wait()
             print("Fire button pressed")
             await self.fire_cannon()
             # wdt.feed()
