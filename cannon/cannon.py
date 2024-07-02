@@ -55,7 +55,7 @@ class Cannon:
             # wdt.feed()
             # print("Looping")
 
-    async def fire_cannon(self) -> None:
+    async def fire_cannon(self) -> bool:
         """
         Fire the cannon
         """
@@ -70,8 +70,10 @@ class Cannon:
             self.main_relay.relay_off()
             LED.off()
             print("Solenoid off")
+            return True
         else:
             print("Safety not released, not firing")
+            return False
 
 
 def main() -> None:

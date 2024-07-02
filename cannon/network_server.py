@@ -59,8 +59,11 @@ class NetworkServer:
         stateis = ""
         if triggered == 6:
             print("triggered remotely")
-            await self.trigger_callback()
-            stateis = "triggered"
+            result_state: bool = await self.trigger_callback()
+            if result_state:
+                stateis = "triggered"
+            else:
+                stateis = "safety on"
 
         response = self.html % stateis
         writer.write("HTTP/1.0 200 OK\r\nContent-type: text/html\r\n\r\n")
