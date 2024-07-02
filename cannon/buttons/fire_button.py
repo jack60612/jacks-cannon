@@ -1,11 +1,14 @@
 from cannon.buttons.button import Button
 from cannon.constants import Constants, PinValues
+from primitives import EButton  # events.py
 
 
 class FireButton(Button):
     """
     Class for interacting with the fire button
     """
+
+    button: EButton
 
     def __init__(
         self,
@@ -17,17 +20,12 @@ class FireButton(Button):
         :param pin: The pin the fire button is connected to
         """
         super().__init__(pin=pin, debounce_window=debounce_window)
+        self.button = EButton(pin=self.pin)
+        self.button.debounce_ms = self.debounce_window
 
-    def button_triggered(self) -> bool:
+    def is_pressed(self) -> bool:
         """
-        Check if the button is pressed and not already tracked as pressed
-        :return: True if the button is pressed and not already tracked as pressed, False otherwise
+        Get the state of the safety switch, with debouncing
+        :return: True if the safety switch is pressed, False otherwise
         """
-        last_val = self.last_value
-        button_state = self.debounced()
-        if (
-            button_state and not last_val
-        ):  # if the button is pressed and the last value was not pressed
-            return True
-        else:  # if the button is not pressed or the last value was pressed
-            return False
+        return self.button() == 1

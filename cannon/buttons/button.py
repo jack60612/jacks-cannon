@@ -1,5 +1,3 @@
-import time
-
 from machine import Pin
 
 
@@ -32,27 +30,9 @@ class Button:
         """
         return self.pin.value() == 0
 
-    def debounced(self) -> bool:
+    def is_pressed(self) -> bool:
         """
-        Get the debounced state of the button
+        Get the state of the button, with debouncing
         :return: True if the button is pressed, False otherwise
         """
-        # if matches the last value, return the last value, skip the debounce
-        if self.is_pressed_raw() == self.last_value:
-            return self.last_value
-        new_value = self.is_pressed_raw()
-        active = 0
-        while active < self.debounce_window:  # wait for 20ms with the same value
-            if self.is_pressed_raw() == new_value:
-                active += 1  # if the value is still changed count up
-            elif (
-                -self.debounce_window > active
-            ):  # if the value flipped back return the old value
-                return self.last_value
-            elif active > 0:  # if the value flipped, reset the counter
-                active = -1
-            else:  # if the value is still old count negative
-                active += -1
-            time.sleep_ms(1)  # sleep for 1ms, purposly block.
-        self.last_value = new_value
-        return new_value  # if the value is stable for 20ms, return it
+        pass

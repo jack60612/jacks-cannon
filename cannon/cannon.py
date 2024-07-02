@@ -43,16 +43,16 @@ class Cannon:
         :return:
         """
         LED.on()
-        wdt = WDT(timeout=self.watchdog_timeout)  # watchdog timer
+        # wdt = WDT(timeout=self.watchdog_timeout)  # watchdog timer
         await self.network_server.start()  # Start the network server
         LED.off()
         # Core loop
         while True:
-            if self.fire_button.button_triggered():
-                print("Fire button pressed")
-                await self.fire_cannon()
-            await asyncio.sleep_ms(self.main_loop_time)
-            wdt.feed()
+            self.fire_button.button.close.clear()
+            await self.fire_button.button.close.wait()
+            print("Fire button pressed")
+            await self.fire_cannon()
+            # wdt.feed()
             # print("Looping")
 
     async def fire_cannon(self) -> None:
@@ -60,7 +60,7 @@ class Cannon:
         Fire the cannon
         """
         print("Fire Command Received")
-        if self.safety_button.debounced():
+        if self.safety_button.is_pressed():
             print("Safety released, firing")
             LED.on()
             self.main_relay.relay_on()
