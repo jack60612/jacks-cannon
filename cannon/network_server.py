@@ -1,8 +1,4 @@
-try:
-    import asyncio
-except ImportError:
-    import uasyncio as asyncio
-import socket
+import asyncio
 import time
 
 import network
@@ -18,12 +14,12 @@ class NetworkServer:
     html: str
     wlan: network.WLAN
     addr: tuple[str, int]
-    webserver_socket: socket.Socket
 
     def __init__(self, trigger_callback) -> None:
         """
         Initialize the network server
         """
+        self.main_task = None
         self.start_wifi()
         self.trigger_callback = trigger_callback
         self.html = """<!DOCTYPE html>
@@ -78,7 +74,7 @@ class NetworkServer:
         """
         Start the webserver
         """
-        await asyncio.create_task(
+        self.main_task = await asyncio.create_task(
             asyncio.start_server(self.serve_client, "0.0.0.0", 80)
         )
         # await asyncio.start_server(self.serve_client, "0.0.0.0",80)

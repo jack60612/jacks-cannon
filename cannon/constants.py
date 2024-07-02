@@ -15,3 +15,9 @@ class Constants:
 
     ssid = "funnywifi"
     password = "hellothere"
+    fire_time: int = 150  # Time to fire the cannon for in ms
+    main_loop_time: int = 10  # 10ms loop time
+    watchdog_timeout: int = (
+        2000  # 2 seconds, watchdog timer, so if the program hangs, it will reset
+    )
+    debounce_window: int = 20  # 20ms debounce window

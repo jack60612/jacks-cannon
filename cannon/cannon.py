@@ -1,14 +1,11 @@
-try:
-    import asyncio
-except ImportError:
-    import uasyncio as asyncio
-
+import asyncio
 import time
 
 from machine import WDT, Pin  # Watchdog Timer
 
 from cannon.buttons.fire_button import FireButton
 from cannon.buttons.safety_button import SafetyButton
+from cannon.constants import Constants
 from cannon.network_server import NetworkServer
 from cannon.relay import Relay
 
@@ -24,7 +21,9 @@ class Cannon:
     safety_button: SafetyButton
     main_relay: Relay
     network_server: NetworkServer
-    fire_time: int = 200
+    fire_time: int
+    main_loop_time: int
+    watchdog_timeout: int
 
     def __init__(self) -> None:
         """
@@ -34,25 +33,25 @@ class Cannon:
         self.safety_button: SafetyButton = SafetyButton()
         self.main_relay: Relay = Relay()
         self.network_server: NetworkServer = NetworkServer(self.fire_cannon)
+        self.fire_time: int = Constants.fire_time
+        self.main_loop_time: int = Constants.main_loop_time
+        self.watchdog_timeout: int = Constants.watchdog_timeout
 
     async def start(self) -> None:
         """
         Main function for the cannon
         :return:
         """
-        loop_time = 50  # 50ms loop time
-        LED.toggle()
-        wdt = WDT(
-            timeout=2000
-        )  # 2 seconds, watchdog timer, so if the program hangs, it will reset
+        LED.on()
+        wdt = WDT(timeout=self.watchdog_timeout)  # watchdog timer
         await self.network_server.start()  # Start the network server
-        LED.toggle()
+        LED.off()
         # Core loop
         while True:
             if self.fire_button.button_triggered():
                 print("Fire button pressed")
                 await self.fire_cannon()
-            await asyncio.sleep_ms(loop_time)
+            await asyncio.sleep_ms(self.main_loop_time)
             wdt.feed()
             # print("Looping")
 
@@ -61,14 +60,13 @@ class Cannon:
         Fire the cannon
         """
         print("Fire Command Received")
-        if self.safety_button.is_pressed():
+        if self.safety_button.debounced():
             print("Safety released, firing")
             LED.on()
             self.main_relay.relay_on()
             print("Solenoid on")
-            time.sleep_ms(
-                self.fire_time
-            )  # this is purposly blocking, so that the time is accurate
+            # this is purposely blocking, so that the time is accurate
+            time.sleep_ms(self.fire_time)
             self.main_relay.relay_off()
             LED.off()
             print("Solenoid off")
