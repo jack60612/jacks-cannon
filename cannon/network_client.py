@@ -21,7 +21,7 @@ class NetworkClient:
         """
         Initialize the network server
         """
-        self.fire_button: FireButton = FireButton(pin=PinValues.remote_button_pin)
+        self.fire_button: FireButton = FireButton(pin=PinValues.remote_button_pin, pull_up=True)
         #self.fire_button.pin.irq(trigger=machine.Pin.IRQ_FALLING, handler=None, wake=machine.DEEPSLEEP)
         self.watchdog = machine.WDT(timeout=Constants.watchdog_timeout)  # watchdog timer
         self.start_wifi() # we dont feed the watchdog after we start looping here.

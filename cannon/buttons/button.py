@@ -11,14 +11,14 @@ class Button:
     last_value: bool
     debounce_window: int
 
-    def __init__(self, pin: int, debounce_window: int) -> None:
+    def __init__(self, pin: int, debounce_window: int, pull_up = False) -> None:
         """
         Initialize the button
         :param pin: The pin the button is connected to
         """
         self.pin_number: int = pin
         self.pin = Pin(
-            self.pin_number, Pin.IN, Pin.PULL_UP
+            self.pin_number, Pin.IN, Pin.PULL_UP if pull_up else Pin.PULL_DOWN
         )  # pull up because the button connects to ground
         self.last_value = False
         self.debounce_window = debounce_window

@@ -15,12 +15,13 @@ class FireButton(Button):
         self,
         pin: int = PinValues.fire_button_pin,
         debounce_window: int = Constants.debounce_window,
+        pull_up: bool = False,
     ) -> None:
         """
         Initialize the fire button
         :param pin: The pin the fire button is connected to
         """
-        super().__init__(pin=pin, debounce_window=debounce_window)
+        super().__init__(pin=pin, debounce_window=debounce_window, pull_up=pull_up)
         self.button = EButton(pin=self.pin)
         self.button.debounce_ms = self.debounce_window
 
