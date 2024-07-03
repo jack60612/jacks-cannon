@@ -13,7 +13,6 @@ class NetworkServer:
 
     html: str
     wlan: network.WLAN
-    addr: tuple[str, int]
 
     def __init__(self, trigger_callback) -> None:
         """

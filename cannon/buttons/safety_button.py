@@ -1,6 +1,7 @@
+from primitives import ESwitch  # events.py
+
 from cannon.buttons.button import Button
 from cannon.constants import Constants, PinValues
-from primitives import ESwitch  # events.py
 
 
 class SafetyButton(Button):

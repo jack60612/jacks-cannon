@@ -1,6 +1,7 @@
+from primitives import EButton  # events.py
+
 from cannon.buttons.button import Button
 from cannon.constants import Constants, PinValues
-from primitives import EButton  # events.py
 
 
 class FireButton(Button):

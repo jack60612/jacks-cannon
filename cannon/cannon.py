@@ -1,15 +1,12 @@
 import asyncio
 import time
 
-from machine import Pin  # Watchdog Timer
-
 from cannon.buttons.fire_button import FireButton
 from cannon.buttons.safety_button import SafetyButton
-from cannon.constants import Constants
+from cannon.constants import LED, Constants
+from cannon.network_client import NetworkClient
 from cannon.network_server import NetworkServer
 from cannon.relay import Relay
-
-LED = Pin("LED", Pin.OUT)
 
 
 class Cannon:
@@ -80,9 +77,14 @@ def main() -> None:
     """
     Starts event loop
     """
-    cannon: Cannon = Cannon()
+    if Constants.remote_enabled:
+        network_client: NetworkClient = NetworkClient()
+        start_func = network_client.start
+    else:
+        cannon: Cannon = Cannon()
+        start_func = cannon.start
     try:
-        asyncio.run(cannon.start())
+        asyncio.run(start_func())
     finally:
         asyncio.new_event_loop()
 
