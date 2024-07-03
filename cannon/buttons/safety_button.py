@@ -15,12 +15,13 @@ class SafetyButton(Button):
         self,
         pin: int = PinValues.safety_switch_pin,
         debounce_window: int = Constants.debounce_window,
+        pull_up: bool = True,
     ) -> None:
         """
         Initialize the safety switch
         :param pin: The pin the safety switch is connected to
         """
-        super().__init__(pin=pin, debounce_window=debounce_window)
+        super().__init__(pin=pin, debounce_window=debounce_window, pull_up=pull_up)
         self.switch = ESwitch(pin=self.pin)
         self.switch.debounce_ms = self.debounce_window
 
